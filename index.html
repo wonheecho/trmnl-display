@@ -19,6 +19,8 @@
       color: #000;
       font-family: 'Noto Sans KR', sans-serif;
       font-size: 12px;
+       -webkit-font-smoothing: none;
+      font-smooth: never;
     }
 
     .wrapper {
@@ -46,7 +48,7 @@
     }
     .header-sub {
       font-size: 11px;
-      color: #555;
+      color: #000;
     }
 
     /* ── Main content ── */
@@ -88,24 +90,24 @@
       display: grid;
       grid-template-columns: 44px repeat(5, 1fr);
       grid-template-rows: repeat(10, 1fr);
-      border: 1px solid #ccc;
+      border: 1px solid #000;
       border-right: none;
       border-bottom: none;
     }
 
     .time-label {
       font-size: 9px;
-      color: #666;
+      color: #000;
       text-align: right;
       padding-right: 4px;
       padding-top: 2px;
       border-right: 1px solid #000;
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid #000;
     }
 
     .cell {
-      border-right: 1px solid #ccc;
-      border-bottom: 1px solid #eee;
+      border-right: 1px solid #000;
+      border-bottom: 1px solid #000;
       position: relative;
     }
 
@@ -192,7 +194,7 @@
       flex-direction: column;
       align-items: center;
       gap: 4px;
-      border-top: 1px solid #ccc;
+      border-top: 1px solid #000;
       padding-top: 8px;
     }
     .qr-label {
