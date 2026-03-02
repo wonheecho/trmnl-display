@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=800">
+  <title>조원희 교수 시간표</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      width: 800px;
+      height: 480px;
+      overflow: hidden;
+      background: #fff;
+      color: #000;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 12px;
+      -webkit-font-smoothing: none;
+      font-smooth: never;
+    }
+
+    .wrapper {
+      display: flex;
+      flex-direction: column;
+      width: 800px;
+      height: 480px;
+      padding: 12px 14px 10px;
+      gap: 8px;
+    }
+
+    /* ── Header ── */
+    .header {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 8px;
+      border-bottom: 2px solid #000;
+      padding-bottom: 6px;
+    }
+    .header-title {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+    .header-sub {
+      font-size: 11px;
+      color: #000;
+    }
+
+    /* ── Main content ── */
+    .content {
+      display: flex;
+      flex: 1;
+      min-height: 0;
+    }
+
+    /* ── Calendar ── */
+    .calendar {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cal-header {
+      display: grid;
+      grid-template-columns: 44px repeat(5, 1fr);
+      border-bottom: 1px solid #000;
+      margin-bottom: 2px;
+    }
+    .cal-header .day-label {
+      font-size: 13px;
+      font-weight: 700;
+      text-align: center;
+      padding: 2px 0 4px;
+    }
+    .cal-header .day-label.today {
+      background: #000;
+      color: #fff;
+      border-radius: 3px;
+    }
+
+    .cal-body {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 44px repeat(5, 1fr);
+      grid-template-rows: repeat(10, 1fr);
+      border: 1px solid #000;
+      border-right: none;
+      border-bottom: none;
+    }
+
+    .time-label {
+      font-size: 10px;
+      color: #000;
+      text-align: right;
+      padding-right: 4px;
+      padding-top: 2px;
+      border-right: 1px solid #000;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .cell {
+      border-right: 1px solid #000;
+      border-bottom: 1px solid #ccc;
+      position: relative;
+    }
+
+    /* ── Events ── */
+    .event {
+      position: absolute;
+      left: 1px;
+      right: 1px;
+      border-radius: 2px;
+      padding: 3px 4px;
+      font-size: 11px;
+      font-weight: 500;
+      line-height: 1.3;
+      overflow: hidden;
+      z-index: 2;
+    }
+    .event-class {
+      background: #000;
+      color: #fff;
+    }
+    .event-office {
+      background: #fff;
+      color: #000;
+      border: 1.5px solid #000;
+    }
+    .event-name {
+      font-weight: 700;
+      font-size: 11px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .event-time {
+      font-size: 10px;
+    }
+    .event-loc {
+      font-size: 10px;
+    }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+
+  <div class="header">
+    <span class="header-title">조원희 교수 시간표 (2026 1학기)</span>
+    <span class="header-sub">연세대학교 사학과</span>
+  </div>
+
+  <div class="content">
+    <div class="calendar">
+      <div class="cal-header">
+        <div></div>
+        <div class="day-label" id="lbl-mon">월</div>
+        <div class="day-label" id="lbl-tue">화</div>
+        <div class="day-label" id="lbl-wed">수</div>
+        <div class="day-label" id="lbl-thu">목</div>
+        <div class="day-label" id="lbl-fri">금</div>
+      </div>
+
+      <div class="cal-body">
+
+        <div class="time-label">9시</div>
+        <div class="cell" id="r0c1"></div>
+        <div class="cell" id="r0c2"></div>
+        <div class="cell" id="r0c3"></div>
+        <div class="cell" id="r0c4"></div>
+        <div class="cell" id="r0c5"></div>
+
+        <div class="time-label">10시</div>
+        <div class="cell" id="r1c1"></div>
+        <div class="cell" id="r1c2"></div>
+        <div class="cell" id="r1c3"></div>
+        <div class="cell" id="r1c4"></div>
+        <div class="cell" id="r1c5"></div>
+
+        <div class="time-label">11시</div>
+        <div class="cell" id="r2c1"></div>
+        <div class="cell" id="r2c2"></div>
+        <div class="cell" id="r2c3"></div>
+        <div class="cell" id="r2c4"></div>
+        <div class="cell" id="r2c5"></div>
+
+        <div class="time-label">12시</div>
+        <div class="cell" id="r3c1"></div>
+        <div class="cell" id="r3c2"></div>
+        <div class="cell" id="r3c3"></div>
+        <div class="cell" id="r3c4"></div>
+        <div class="cell" id="r3c5"></div>
+
+        <div class="time-label">13시</div>
+        <div class="cell" id="r4c1"></div>
+        <div class="cell" id="r4c2"></div>
+        <div class="cell" id="r4c3"></div>
+        <div class="cell" id="r4c4"></div>
+        <div class="cell" id="r4c5"></div>
+
+        <div class="time-label">14시</div>
+        <div class="cell" id="r5c1"></div>
+        <div class="cell" id="r5c2"></div>
+        <div class="cell" id="r5c3"></div>
+        <div class="cell" id="r5c4"></div>
+        <div class="cell" id="r5c5"></div>
+
+        <div class="time-label">15시</div>
+        <div class="cell" id="r6c1"></div>
+        <div class="cell" id="r6c2"></div>
+        <div class="cell" id="r6c3"></div>
+        <div class="cell" id="r6c4"></div>
+        <div class="cell" id="r6c5"></div>
+
+        <div class="time-label">16시</div>
+        <div class="cell" id="r7c1"></div>
+        <div class="cell" id="r7c2"></div>
+        <div class="cell" id="r7c3"></div>
+        <div class="cell" id="r7c4"></div>
+        <div class="cell" id="r7c5"></div>
+
+        <div class="time-label">17시</div>
+        <div class="cell" id="r8c1"></div>
+        <div class="cell" id="r8c2"></div>
+        <div class="cell" id="r8c3"></div>
+        <div class="cell" id="r8c4"></div>
+        <div class="cell" id="r8c5"></div>
+
+        <div class="time-label">18시</div>
+        <div class="cell" id="r9c1"></div>
+        <div class="cell" id="r9c2"></div>
+        <div class="cell" id="r9c3"></div>
+        <div class="cell" id="r9c4"></div>
+        <div class="cell" id="r9c5"></div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── Highlight today ──
+const today = new Date().getDay();
+const dayMap = {1:'lbl-mon',2:'lbl-tue',3:'lbl-wed',4:'lbl-thu',5:'lbl-fri'};
+if(dayMap[today]) {
+  document.getElementById(dayMap[today]).classList.add('today');
+}
+
+// ── Place event on grid ──
+// Rows: 0=9h, 1=10h, 2=11h, 3=12h, 4=13h, 5=14h, 6=15h, 7=16h, 8=17h, 9=18h
+// Cols: 1=Mon, 2=Tue, 3=Wed, 4=Thu, 5=Fri
+function placeEvent(col, startHour, endHour, label, timeStr, type, loc) {
+  const startRow = startHour - 9;
+  const rowSpan  = endHour - startHour;
+  const anchor   = document.getElementById(`r${startRow}c${col}`);
+  if (!anchor) return;
+
+  const div = document.createElement('div');
+  div.className = `event event-${type}`;
+  const locHtml = loc ? `<div class="event-loc">${loc}</div>` : '';
+  div.innerHTML = `<div class="event-name">${label}</div><div class="event-time">${timeStr}</div>${locHtml}`;
+  anchor.appendChild(div);
+
+  requestAnimationFrame(() => {
+    const cellH = anchor.getBoundingClientRect().height;
+    div.style.top = '1px';
+    div.style.height = (cellH * rowSpan - 2) + 'px';
+  });
+}
+
+// 중국중세정치와 문화 — Tue 15–16, Thu 16–18
+placeEvent(2, 15, 16, '중국중세정치와 문화', '15–16시', 'class', '교303');
+placeEvent(4, 16, 18, '중국중세정치와 문화', '16–18시', 'class', '교303');
+
+// World History Group 1 — Mon 11–13, Wed 12–13
+placeEvent(1, 11, 13, 'World History Gr.1', '11–13시', 'class', '대별B106');
+placeEvent(3, 12, 13, 'World History Gr.1', '12–13시', 'class', '대별B106');
+
+// 중앙아시아의제문제 — Mon 15–18
+placeEvent(1, 15, 18, '중앙아시아의제문제', '15–18시 (대학원)', 'class', '외627-1');
+
+// 면담 시간 — Thu 12–14
+placeEvent(4, 12, 14, '면담 시간', '12–14시', 'office', '');
+</script>
+</body>
+</html>
