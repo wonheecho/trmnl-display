@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=800">
-  <title>조원희 교수 시간표(2026년 1학기)</title>
+  <title>조원희 교수 시간표</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
@@ -21,7 +21,6 @@
       font-size: 12px;
     }
 
-    /* ── Layout ── */
     .wrapper {
       display: flex;
       flex-direction: column;
@@ -49,7 +48,7 @@
       color: #555;
     }
 
-    /* ── Main content: grid + sidebar ── */
+    /* ── Main content ── */
     .content {
       display: flex;
       flex: 1;
@@ -57,7 +56,7 @@
       min-height: 0;
     }
 
-    /* ── Calendar grid ── */
+    /* ── Calendar ── */
     .calendar {
       flex: 1;
       display: flex;
@@ -87,7 +86,7 @@
       flex: 1;
       display: grid;
       grid-template-columns: 44px repeat(5, 1fr);
-      grid-template-rows: repeat(7, 1fr);
+      grid-template-rows: repeat(10, 1fr);
       border: 1px solid #ccc;
       border-right: none;
       border-bottom: none;
@@ -99,9 +98,8 @@
       text-align: right;
       padding-right: 4px;
       padding-top: 2px;
-      border-right: 1px solid #ccc;
+      border-right: 1px solid #000;
       border-bottom: 1px solid #eee;
-      border-right-color: #000;
     }
 
     .cell {
@@ -110,7 +108,7 @@
       position: relative;
     }
 
-    /* Events */
+    /* ── Events ── */
     .event {
       position: absolute;
       left: 1px;
@@ -144,7 +142,7 @@
       opacity: 0.85;
     }
 
-    /* ── Sidebar: legend + QR ── */
+    /* ── Sidebar ── */
     .sidebar {
       width: 118px;
       display: flex;
@@ -213,7 +211,6 @@
 
   <div class="content">
     <div class="calendar">
-      <!-- Day headers -->
       <div class="cal-header">
         <div></div>
         <div class="day-label" id="lbl-mon">월</div>
@@ -223,64 +220,79 @@
         <div class="day-label" id="lbl-fri">금</div>
       </div>
 
-      <!-- Grid: rows = hour slots 10,11,12,13,14,15,16,17 -->
-      <div class="cal-body" id="cal-body">
-        <!-- Time labels -->
-        <div class="time-label">10시</div>
+      <!-- 10 rows: 9–18시 -->
+      <div class="cal-body">
+
+        <div class="time-label">9시</div>
         <div class="cell" id="r0c1"></div>
         <div class="cell" id="r0c2"></div>
         <div class="cell" id="r0c3"></div>
         <div class="cell" id="r0c4"></div>
         <div class="cell" id="r0c5"></div>
 
-        <div class="time-label">11시</div>
+        <div class="time-label">10시</div>
         <div class="cell" id="r1c1"></div>
         <div class="cell" id="r1c2"></div>
         <div class="cell" id="r1c3"></div>
         <div class="cell" id="r1c4"></div>
         <div class="cell" id="r1c5"></div>
 
-        <div class="time-label">12시</div>
+        <div class="time-label">11시</div>
         <div class="cell" id="r2c1"></div>
         <div class="cell" id="r2c2"></div>
         <div class="cell" id="r2c3"></div>
         <div class="cell" id="r2c4"></div>
         <div class="cell" id="r2c5"></div>
 
-        <div class="time-label">13시</div>
+        <div class="time-label">12시</div>
         <div class="cell" id="r3c1"></div>
         <div class="cell" id="r3c2"></div>
         <div class="cell" id="r3c3"></div>
         <div class="cell" id="r3c4"></div>
         <div class="cell" id="r3c5"></div>
 
-        <div class="time-label">14시</div>
+        <div class="time-label">13시</div>
         <div class="cell" id="r4c1"></div>
         <div class="cell" id="r4c2"></div>
         <div class="cell" id="r4c3"></div>
         <div class="cell" id="r4c4"></div>
         <div class="cell" id="r4c5"></div>
 
-        <div class="time-label">15시</div>
+        <div class="time-label">14시</div>
         <div class="cell" id="r5c1"></div>
         <div class="cell" id="r5c2"></div>
         <div class="cell" id="r5c3"></div>
         <div class="cell" id="r5c4"></div>
         <div class="cell" id="r5c5"></div>
 
-        <div class="time-label">16시</div>
+        <div class="time-label">15시</div>
         <div class="cell" id="r6c1"></div>
         <div class="cell" id="r6c2"></div>
         <div class="cell" id="r6c3"></div>
         <div class="cell" id="r6c4"></div>
         <div class="cell" id="r6c5"></div>
 
-        <div class="time-label">17시</div>
+        <div class="time-label">16시</div>
         <div class="cell" id="r7c1"></div>
         <div class="cell" id="r7c2"></div>
         <div class="cell" id="r7c3"></div>
         <div class="cell" id="r7c4"></div>
         <div class="cell" id="r7c5"></div>
+
+        <div class="time-label">17시</div>
+        <div class="cell" id="r8c1"></div>
+        <div class="cell" id="r8c2"></div>
+        <div class="cell" id="r8c3"></div>
+        <div class="cell" id="r8c4"></div>
+        <div class="cell" id="r8c5"></div>
+
+        <div class="time-label">18시</div>
+        <div class="cell" id="r9c1"></div>
+        <div class="cell" id="r9c2"></div>
+        <div class="cell" id="r9c3"></div>
+        <div class="cell" id="r9c4"></div>
+        <div class="cell" id="r9c5"></div>
+
       </div>
     </div>
 
@@ -316,39 +328,26 @@
 
 <script>
 // ── Highlight today ──
-const today = new Date().getDay(); // 0=Sun,1=Mon,...5=Fri,6=Sat
+const today = new Date().getDay();
 const dayMap = {1:'lbl-mon',2:'lbl-tue',3:'lbl-wed',4:'lbl-thu',5:'lbl-fri'};
 if(dayMap[today]) {
   document.getElementById(dayMap[today]).classList.add('today');
 }
 
-// ── Grid helpers ──
-// Rows: 0=10h, 1=11h, 2=12h, 3=13h, 4=14h, 5=15h, 6=16h, 7=17h
+// ── Place event on grid ──
+// Rows: 0=9h, 1=10h, 2=11h, 3=12h, 4=13h, 5=14h, 6=15h, 7=16h, 8=17h, 9=18h
 // Cols: 1=Mon, 2=Tue, 3=Wed, 4=Thu, 5=Fri
-// Each row = 1 hour; cell height determined by CSS grid (equal rows)
-
-const CELL_H = 51; // approx px per row — will be computed
-
 function placeEvent(col, startHour, endHour, label, timeStr, type) {
-  const startRow = startHour - 10;
-  const endRow   = endHour - 10;
-  const rowSpan  = endRow - startRow;
-
-  // Get anchor cell
-  const anchor = document.getElementById(`r${startRow}c${col}`);
+  const startRow = startHour - 9;
+  const rowSpan  = endHour - startHour;
+  const anchor   = document.getElementById(`r${startRow}c${col}`);
   if (!anchor) return;
 
   const div = document.createElement('div');
   div.className = `event event-${type}`;
-
-  // height = rowSpan cells worth; we use a percentage trick via absolute + inline style
-  // We'll set height after layout using computed style
   div.innerHTML = `<div class="event-name">${label}</div><div class="event-time">${timeStr}</div>`;
-
-  anchor.style.position = 'relative';
   anchor.appendChild(div);
 
-  // Set height dynamically after paint
   requestAnimationFrame(() => {
     const cellH = anchor.getBoundingClientRect().height;
     div.style.top = '1px';
@@ -356,19 +355,18 @@ function placeEvent(col, startHour, endHour, label, timeStr, type) {
   });
 }
 
-// ── Schedule data ──
-// Class 1: 중국중세정치와 문화 — Tue 15–16, Thu 16–18
+// 중국중세정치와 문화 — Tue 15–16, Thu 16–18
 placeEvent(2, 15, 16, '중국중세정치와 문화', '15–16시', 'class');
 placeEvent(4, 16, 18, '중국중세정치와 문화', '16–18시', 'class');
 
-// Class 2: World History Group 1 — Mon 11–13, Wed 12–13
+// World History Group 1 — Mon 11–13, Wed 12–13
 placeEvent(1, 11, 13, 'World History Gr.1', '11–13시', 'class');
 placeEvent(3, 12, 13, 'World History Gr.1', '12–13시', 'class');
 
-// Class 3: 중앙아시아의제문제 — Mon 15–18
+// 중앙아시아의제문제 — Mon 15–18
 placeEvent(1, 15, 18, '중앙아시아의제문제', '15–18시 (대학원)', 'class');
 
-// Office hours: Thu 12–14
+// 면담 시간 — Thu 12–14
 placeEvent(4, 12, 14, '면담 시간', '12–14시', 'office');
 
 // ── QR Code ──
