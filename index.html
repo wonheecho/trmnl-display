@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=800">
+  <title>조원희 교수 시간표</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      width: 800px;
+      height: 480px;
+      overflow: hidden;
+      background: #fff;
+      color: #000;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 12px;
+    }
+
+    /* ── Layout ── */
+    .wrapper {
+      display: flex;
+      flex-direction: column;
+      width: 800px;
+      height: 480px;
+      padding: 12px 14px 10px;
+      gap: 8px;
+    }
+
+    /* ── Header ── */
+    .header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      border-bottom: 2px solid #000;
+      padding-bottom: 6px;
+    }
+    .header-title {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+    .header-sub {
+      font-size: 11px;
+      color: #555;
+    }
+
+    /* ── Main content: grid + sidebar ── */
+    .content {
+      display: flex;
+      flex: 1;
+      gap: 10px;
+      min-height: 0;
+    }
+
+    /* ── Calendar grid ── */
+    .calendar {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .cal-header {
+      display: grid;
+      grid-template-columns: 44px repeat(5, 1fr);
+      border-bottom: 1px solid #000;
+      margin-bottom: 2px;
+    }
+    .cal-header .day-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-align: center;
+      padding: 2px 0 4px;
+    }
+    .cal-header .day-label.today {
+      background: #000;
+      color: #fff;
+      border-radius: 3px;
+    }
+
+    .cal-body {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 44px repeat(5, 1fr);
+      grid-template-rows: repeat(7, 1fr);
+      border: 1px solid #ccc;
+      border-right: none;
+      border-bottom: none;
+    }
+
+    .time-label {
+      font-size: 9px;
+      color: #666;
+      text-align: right;
+      padding-right: 4px;
+      padding-top: 2px;
+      border-right: 1px solid #ccc;
+      border-bottom: 1px solid #eee;
+      border-right-color: #000;
+    }
+
+    .cell {
+      border-right: 1px solid #ccc;
+      border-bottom: 1px solid #eee;
+      position: relative;
+    }
+
+    /* Events */
+    .event {
+      position: absolute;
+      left: 1px;
+      right: 1px;
+      border-radius: 2px;
+      padding: 2px 3px;
+      font-size: 9.5px;
+      font-weight: 500;
+      line-height: 1.3;
+      overflow: hidden;
+      z-index: 2;
+    }
+    .event-class {
+      background: #000;
+      color: #fff;
+    }
+    .event-office {
+      background: #fff;
+      color: #000;
+      border: 1.5px solid #000;
+    }
+    .event-name {
+      font-weight: 700;
+      font-size: 9px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .event-time {
+      font-size: 8.5px;
+      opacity: 0.85;
+    }
+
+    /* ── Sidebar: legend + QR ── */
+    .sidebar {
+      width: 118px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .legend {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .legend-title {
+      font-size: 10px;
+      font-weight: 700;
+      border-bottom: 1px solid #000;
+      padding-bottom: 3px;
+      margin-bottom: 2px;
+    }
+    .legend-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 5px;
+    }
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .legend-dot.class { background: #000; }
+    .legend-dot.office { background: #fff; border: 1.5px solid #000; }
+    .legend-text {
+      font-size: 9px;
+      line-height: 1.35;
+    }
+
+    .qr-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      border-top: 1px solid #ccc;
+      padding-top: 8px;
+    }
+    .qr-label {
+      font-size: 9px;
+      color: #444;
+      text-align: center;
+    }
+    #qrcode canvas, #qrcode img {
+      width: 80px !important;
+      height: 80px !important;
+    }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+
+  <div class="header">
+    <span class="header-title">조원희 교수 시간표</span>
+    <span class="header-sub">연세대학교 사학과</span>
+  </div>
+
+  <div class="content">
+    <div class="calendar">
+      <!-- Day headers -->
+      <div class="cal-header">
+        <div></div>
+        <div class="day-label" id="lbl-mon">월</div>
+        <div class="day-label" id="lbl-tue">화</div>
+        <div class="day-label" id="lbl-wed">수</div>
+        <div class="day-label" id="lbl-thu">목</div>
+        <div class="day-label" id="lbl-fri">금</div>
+      </div>
+
+      <!-- Grid: rows = hour slots 10,11,12,13,14,15,16,17 -->
+      <div class="cal-body" id="cal-body">
+        <!-- Time labels -->
+        <div class="time-label">10시</div>
+        <div class="cell" id="r0c1"></div>
+        <div class="cell" id="r0c2"></div>
+        <div class="cell" id="r0c3"></div>
+        <div class="cell" id="r0c4"></div>
+        <div class="cell" id="r0c5"></div>
+
+        <div class="time-label">11시</div>
+        <div class="cell" id="r1c1"></div>
+        <div class="cell" id="r1c2"></div>
+        <div class="cell" id="r1c3"></div>
+        <div class="cell" id="r1c4"></div>
+        <div class="cell" id="r1c5"></div>
+
+        <div class="time-label">12시</div>
+        <div class="cell" id="r2c1"></div>
+        <div class="cell" id="r2c2"></div>
+        <div class="cell" id="r2c3"></div>
+        <div class="cell" id="r2c4"></div>
+        <div class="cell" id="r2c5"></div>
+
+        <div class="time-label">13시</div>
+        <div class="cell" id="r3c1"></div>
+        <div class="cell" id="r3c2"></div>
+        <div class="cell" id="r3c3"></div>
+        <div class="cell" id="r3c4"></div>
+        <div class="cell" id="r3c5"></div>
+
+        <div class="time-label">14시</div>
+        <div class="cell" id="r4c1"></div>
+        <div class="cell" id="r4c2"></div>
+        <div class="cell" id="r4c3"></div>
+        <div class="cell" id="r4c4"></div>
+        <div class="cell" id="r4c5"></div>
+
+        <div class="time-label">15시</div>
+        <div class="cell" id="r5c1"></div>
+        <div class="cell" id="r5c2"></div>
+        <div class="cell" id="r5c3"></div>
+        <div class="cell" id="r5c4"></div>
+        <div class="cell" id="r5c5"></div>
+
+        <div class="time-label">16시</div>
+        <div class="cell" id="r6c1"></div>
+        <div class="cell" id="r6c2"></div>
+        <div class="cell" id="r6c3"></div>
+        <div class="cell" id="r6c4"></div>
+        <div class="cell" id="r6c5"></div>
+
+        <div class="time-label">17시</div>
+        <div class="cell" id="r7c1"></div>
+        <div class="cell" id="r7c2"></div>
+        <div class="cell" id="r7c3"></div>
+        <div class="cell" id="r7c4"></div>
+        <div class="cell" id="r7c5"></div>
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <div class="legend">
+        <div class="legend-title">수업 및 면담</div>
+        <div class="legend-item">
+          <div class="legend-dot class"></div>
+          <div class="legend-text">중국중세정치와 문화<br>화 15–16 / 목 16–18</div>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot class"></div>
+          <div class="legend-text">World History Gr.1<br>월 11–13 / 수 12–13</div>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot class"></div>
+          <div class="legend-text">중앙아시아의제문제<br>월 15–18 (대학원)</div>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot office"></div>
+          <div class="legend-text">면담 시간<br>목 12–14</div>
+        </div>
+      </div>
+
+      <div class="qr-section">
+        <div id="qrcode"></div>
+        <div class="qr-label">wonheecho.net</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── Highlight today ──
+const today = new Date().getDay(); // 0=Sun,1=Mon,...5=Fri,6=Sat
+const dayMap = {1:'lbl-mon',2:'lbl-tue',3:'lbl-wed',4:'lbl-thu',5:'lbl-fri'};
+if(dayMap[today]) {
+  document.getElementById(dayMap[today]).classList.add('today');
+}
+
+// ── Grid helpers ──
+// Rows: 0=10h, 1=11h, 2=12h, 3=13h, 4=14h, 5=15h, 6=16h, 7=17h
+// Cols: 1=Mon, 2=Tue, 3=Wed, 4=Thu, 5=Fri
+// Each row = 1 hour; cell height determined by CSS grid (equal rows)
+
+const CELL_H = 51; // approx px per row — will be computed
+
+function placeEvent(col, startHour, endHour, label, timeStr, type) {
+  const startRow = startHour - 10;
+  const endRow   = endHour - 10;
+  const rowSpan  = endRow - startRow;
+
+  // Get anchor cell
+  const anchor = document.getElementById(`r${startRow}c${col}`);
+  if (!anchor) return;
+
+  const div = document.createElement('div');
+  div.className = `event event-${type}`;
+
+  // height = rowSpan cells worth; we use a percentage trick via absolute + inline style
+  // We'll set height after layout using computed style
+  div.innerHTML = `<div class="event-name">${label}</div><div class="event-time">${timeStr}</div>`;
+
+  anchor.style.position = 'relative';
+  anchor.appendChild(div);
+
+  // Set height dynamically after paint
+  requestAnimationFrame(() => {
+    const cellH = anchor.getBoundingClientRect().height;
+    div.style.top = '1px';
+    div.style.height = (cellH * rowSpan - 2) + 'px';
+  });
+}
+
+// ── Schedule data ──
+// Class 1: 중국중세정치와 문화 — Tue 15–16, Thu 16–18
+placeEvent(2, 15, 16, '중국중세정치와 문화', '15–16시', 'class');
+placeEvent(4, 16, 18, '중국중세정치와 문화', '16–18시', 'class');
+
+// Class 2: World History Group 1 — Mon 11–13, Wed 12–13
+placeEvent(1, 11, 13, 'World History Gr.1', '11–13시', 'class');
+placeEvent(3, 12, 13, 'World History Gr.1', '12–13시', 'class');
+
+// Class 3: 중앙아시아의제문제 — Mon 15–18
+placeEvent(1, 15, 18, '중앙아시아의제문제', '15–18시 (대학원)', 'class');
+
+// Office hours: Thu 12–14
+placeEvent(4, 12, 14, '면담 시간', '12–14시', 'office');
+
+// ── QR Code ──
+new QRCode(document.getElementById("qrcode"), {
+  text: "https://wonheecho.net",
+  width: 80,
+  height: 80,
+  colorDark: "#000000",
+  colorLight: "#ffffff",
+  correctLevel: QRCode.CorrectLevel.M
+});
+</script>
+</body>
+</html>
