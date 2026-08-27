@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1872">
+  <title>조원희 교수 시간표 (2026 2학기)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      width: 1872px;
+      height: 1404px;
+      overflow: hidden;
+      background: #fff;
+      color: #000;
+      font-family: 'Noto Sans KR', sans-serif;
+      -webkit-font-smoothing: none;
+      font-smooth: never;
+    }
+
+    .wrapper {
+      display: flex;
+      flex-direction: column;
+      width: 1872px;
+      height: 1404px;
+      padding: 32px 36px 28px;
+      gap: 20px;
+    }
+
+    /* ── Header ── */
+    .header {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 16px;
+      border-bottom: 3px solid #000;
+      padding-bottom: 16px;
+    }
+    .header-title {
+      font-size: 48px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+    .header-sub {
+      font-size: 28px;
+      color: #000;
+    }
+
+    /* ── Main content ── */
+    .content {
+      display: flex;
+      flex: 1;
+      gap: 24px;
+      min-height: 0;
+    }
+
+    /* ── Calendar (left) ── */
+    .calendar {
+      flex: 0 0 1200px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cal-header {
+      display: grid;
+      grid-template-columns: 80px repeat(5, 1fr);
+      border-bottom: 2px solid #000;
+      margin-bottom: 4px;
+    }
+    .cal-header .day-label {
+      font-size: 28px;
+      font-weight: 700;
+      text-align: center;
+      padding: 4px 0 10px;
+    }
+    .cal-header .day-label.today {
+      background: #000;
+      color: #fff;
+      border-radius: 6px;
+    }
+
+    .cal-body {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 80px repeat(5, 1fr);
+      grid-template-rows: repeat(10, 1fr);
+      border: 2px solid #000;
+      border-right: none;
+      border-bottom: none;
+    }
+
+    .time-label {
+      font-size: 20px;
+      color: #000;
+      text-align: right;
+      padding-right: 8px;
+      padding-top: 4px;
+      border-right: 2px solid #000;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .cell {
+      border-right: 1px solid #000;
+      border-bottom: 1px solid #ccc;
+      position: relative;
+    }
+
+    /* ── Events ── */
+    .event {
+      position: absolute;
+      left: 2px;
+      right: 2px;
+      border-radius: 4px;
+      padding: 6px 8px;
+      font-size: 22px;
+      font-weight: 500;
+      line-height: 1.35;
+      overflow: hidden;
+      z-index: 2;
+    }
+    .event-class { background: #000; color: #fff; }
+    .event-office { background: #fff; color: #000; border: 2px solid #000; }
+    .event-name {
+      font-weight: 700;
+      font-size: 22px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .event-time { font-size: 19px; }
+
+    /* ── Right panel ── */
+    .right-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* ── QR section ── */
+    .qr-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #000;
+      border-radius: 8px;
+      padding: 28px;
+      gap: 14px;
+    }
+    .qr-name-en {
+      font-size: 30px;
+      font-weight: 700;
+      text-align: center;
+    }
+    .qr-name-kr {
+      font-size: 26px;
+      font-weight: 700;
+      text-align: center;
+    }
+    .qr-divider {
+      width: 80%;
+      border: none;
+      border-top: 2px solid #000;
+      margin: 4px 0;
+    }
+    #qrcode canvas, #qrcode img {
+      width: 260px !important;
+      height: 260px !important;
+    }
+    .qr-caption-en {
+      font-size: 20px;
+      text-align: center;
+    }
+    .qr-caption-kr {
+      font-size: 20px;
+      text-align: center;
+    }
+
+    /* ── Weather / datetime section ── */
+    .weather-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #000;
+      border-radius: 8px;
+      padding: 28px;
+      gap: 10px;
+    }
+    .datetime-date {
+      font-size: 32px;
+      font-weight: 700;
+      text-align: center;
+    }
+    .datetime-time {
+      font-size: 52px;
+      font-weight: 700;
+      text-align: center;
+      letter-spacing: 2px;
+    }
+    .weather-divider {
+      width: 80%;
+      border: none;
+      border-top: 2px solid #000;
+      margin: 6px 0;
+    }
+    .weather-temp {
+      font-size: 48px;
+      font-weight: 700;
+      text-align: center;
+    }
+    .weather-condition {
+      font-size: 26px;
+      text-align: center;
+    }
+    .weather-detail {
+      font-size: 22px;
+      text-align: center;
+      color: #000;
+    }
+    .weather-loading {
+      font-size: 22px;
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+
+  <div class="header">
+    <span class="header-title">조원희 교수 시간표 (2026 2학기)</span>
+    <span class="header-sub">연세대학교 사학과</span>
+  </div>
+
+  <div class="content">
+
+    <!-- ── Calendar ── -->
+    <div class="calendar">
+      <div class="cal-header">
+        <div></div>
+        <div class="day-label" id="lbl-mon">월</div>
+        <div class="day-label" id="lbl-tue">화</div>
+        <div class="day-label" id="lbl-wed">수</div>
+        <div class="day-label" id="lbl-thu">목</div>
+        <div class="day-label" id="lbl-fri">금</div>
+      </div>
+      <div class="cal-body">
+
+        <div class="time-label">9시</div>
+        <div class="cell" id="r0c1"></div><div class="cell" id="r0c2"></div>
+        <div class="cell" id="r0c3"></div><div class="cell" id="r0c4"></div><div class="cell" id="r0c5"></div>
+
+        <div class="time-label">10시</div>
+        <div class="cell" id="r1c1"></div><div class="cell" id="r1c2"></div>
+        <div class="cell" id="r1c3"></div><div class="cell" id="r1c4"></div><div class="cell" id="r1c5"></div>
+
+        <div class="time-label">11시</div>
+        <div class="cell" id="r2c1"></div><div class="cell" id="r2c2"></div>
+        <div class="cell" id="r2c3"></div><div class="cell" id="r2c4"></div><div class="cell" id="r2c5"></div>
+
+        <div class="time-label">12시</div>
+        <div class="cell" id="r3c1"></div><div class="cell" id="r3c2"></div>
+        <div class="cell" id="r3c3"></div><div class="cell" id="r3c4"></div><div class="cell" id="r3c5"></div>
+
+        <div class="time-label">13시</div>
+        <div class="cell" id="r4c1"></div><div class="cell" id="r4c2"></div>
+        <div class="cell" id="r4c3"></div><div class="cell" id="r4c4"></div><div class="cell" id="r4c5"></div>
+
+        <div class="time-label">14시</div>
+        <div class="cell" id="r5c1"></div><div class="cell" id="r5c2"></div>
+        <div class="cell" id="r5c3"></div><div class="cell" id="r5c4"></div><div class="cell" id="r5c5"></div>
+
+        <div class="time-label">15시</div>
+        <div class="cell" id="r6c1"></div><div class="cell" id="r6c2"></div>
+        <div class="cell" id="r6c3"></div><div class="cell" id="r6c4"></div><div class="cell" id="r6c5"></div>
+
+        <div class="time-label">16시</div>
+        <div class="cell" id="r7c1"></div><div class="cell" id="r7c2"></div>
+        <div class="cell" id="r7c3"></div><div class="cell" id="r7c4"></div><div class="cell" id="r7c5"></div>
+
+        <div class="time-label">17시</div>
+        <div class="cell" id="r8c1"></div><div class="cell" id="r8c2"></div>
+        <div class="cell" id="r8c3"></div><div class="cell" id="r8c4"></div><div class="cell" id="r8c5"></div>
+
+        <div class="time-label">18시</div>
+        <div class="cell" id="r9c1"></div><div class="cell" id="r9c2"></div>
+        <div class="cell" id="r9c3"></div><div class="cell" id="r9c4"></div><div class="cell" id="r9c5"></div>
+
+      </div>
+    </div>
+
+    <!-- ── Right panel ── -->
+    <div class="right-panel">
+
+      <!-- QR code -->
+      <div class="qr-section">
+        <div class="qr-name-en">Professor Wonhee Cho</div>
+        <div class="qr-name-kr">조원희 교수</div>
+        <hr class="qr-divider">
+        <div id="qrcode"></div>
+        <div class="qr-caption-en">Professor Cho's Homepage</div>
+        <div class="qr-caption-kr">조원희 교수 홈페이지</div>
+      </div>
+
+      <!-- Date / time / weather -->
+      <div class="weather-section">
+        <div class="datetime-date" id="dt-date">—</div>
+        <div class="datetime-time" id="dt-time">—</div>
+        <hr class="weather-divider">
+        <div class="weather-temp" id="w-temp"><span class="weather-loading">날씨 불러오는 중...</span></div>
+        <div class="weather-condition" id="w-condition"></div>
+        <div class="weather-detail" id="w-detail"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Highlight today ──
+const today = new Date().getDay();
+const dayMap = {1:'lbl-mon',2:'lbl-tue',3:'lbl-wed',4:'lbl-thu',5:'lbl-fri'};
+if(dayMap[today]) document.getElementById(dayMap[today]).classList.add('today');
+
+// ── Date and time ──
+function updateClock() {
+  const now = new Date();
+  const days = ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'];
+  const months = now.getMonth() + 1;
+  const date = now.getDate();
+  const day = days[now.getDay()];
+  document.getElementById('dt-date').textContent =
+    `${now.getFullYear()}년 ${months}월 ${date}일 ${day}`;
+  const h = String(now.getHours()).padStart(2, '0');
+  const m = String(now.getMinutes()).padStart(2, '0');
+  document.getElementById('dt-time').textContent = `${h}:${m}`;
+}
+updateClock();
+setInterval(updateClock, 30000);
+
+// ── Weather codes (WMO) ──
+function weatherDescription(code) {
+  const map = {
+    0:'맑음', 1:'대체로 맑음', 2:'부분적 흐림', 3:'흐림',
+    45:'안개', 48:'서리 안개',
+    51:'가벼운 이슬비', 53:'이슬비', 55:'짙은 이슬비',
+    61:'가벼운 비', 63:'비', 65:'폭우',
+    71:'가벼운 눈', 73:'눈', 75:'폭설',
+    80:'소나기', 81:'강한 소나기', 82:'격렬한 소나기',
+    95:'뇌우', 96:'우박 동반 뇌우', 99:'강한 우박 동반 뇌우'
+  };
+  return map[code] || '알 수 없음';
+}
+
+// ── Fetch Seoul weather via Open-Meteo ──
+// Seoul: lat 37.5665, lon 126.9780
+fetch('https://api.open-meteo.com/v1/forecast?latitude=37.5665&longitude=126.9780&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&wind_speed_unit=kmh&timezone=Asia%2FSeoul')
+  .then(r => r.json())
+  .then(data => {
+    const c = data.current;
+    const temp = Math.round(c.temperature_2m);
+    const feels = Math.round(c.apparent_temperature);
+    const humidity = c.relative_humidity_2m;
+    const wind = Math.round(c.wind_speed_10m);
+    const desc = weatherDescription(c.weather_code);
+    document.getElementById('w-temp').textContent = `${temp}°C`;
+    document.getElementById('w-condition').textContent = desc;
+    document.getElementById('w-detail').textContent =
+      `체감 ${feels}°C  습도 ${humidity}%  바람 ${wind} km/h`;
+  })
+  .catch(() => {
+    document.getElementById('w-temp').textContent = '—';
+    document.getElementById('w-condition').textContent = '날씨 정보를 불러올 수 없습니다';
+  });
+
+// ── Place event ──
+function placeEvent(col, startHour, endHour, label, timeStr, type) {
+  const startRow = startHour - 9;
+  const rowSpan  = endHour - startHour;
+  const anchor   = document.getElementById(`r${startRow}c${col}`);
+  if (!anchor) return;
+  const div = document.createElement('div');
+  div.className = `event event-${type}`;
+  div.innerHTML = `<div class="event-name">${label}</div><div class="event-time">${timeStr}</div>`;
+  anchor.appendChild(div);
+  requestAnimationFrame(() => {
+    const cellH = anchor.getBoundingClientRect().height;
+    div.style.top = '2px';
+    div.style.height = (cellH * rowSpan - 4) + 'px';
+  });
+}
+
+// 북방민족사의 제문제 (대학원) — 수 15–18
+placeEvent(3, 15, 18, '북방민족사의 제문제', '15–18시 (대학원)', 'class');
+
+// 동양사입문 (학부) — 화 15–16, 목 16–18
+placeEvent(2, 15, 16, '동양사입문', '15–16시', 'class');
+placeEvent(4, 16, 18, '동양사입문', '16–18시', 'class');
+
+// ── QR Code ──
+new QRCode(document.getElementById("qrcode"), {
+  text: "https://wonheecho.net",
+  width: 260,
+  height: 260,
+  colorDark: "#000000",
+  colorLight: "#ffffff",
+  correctLevel: QRCode.CorrectLevel.M
+});
+</script>
+</body>
+</html>
