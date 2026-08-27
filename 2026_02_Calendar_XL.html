@@ -181,7 +181,7 @@
       text-align: center;
     }
 
-    /* ── Weather / datetime section ── */
+    /* ── Weather / date section ── */
     .weather-section {
       flex: 1;
       display: flex;
@@ -317,21 +317,17 @@ const nowKR = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Seou
 const dayMap = {1:'lbl-mon',2:'lbl-tue',3:'lbl-wed',4:'lbl-thu',5:'lbl-fri'};
 if(dayMap[nowKR.getDay()]) document.getElementById(dayMap[nowKR.getDay()]).classList.add('today');
 
-// ── Date and time (always Korea Standard Time) ──
-function updateClock() {
+// ── Date only (Korea Standard Time) ──
+function updateDate() {
   const now = new Date();
   const tz = { timeZone: 'Asia/Seoul' };
-  const year  = now.toLocaleString('ko-KR', { ...tz, year: 'numeric' }).replace(/[^0-9]/g, '');
-  const month = now.toLocaleString('ko-KR', { ...tz, month: 'numeric' });
-  const day   = now.toLocaleString('ko-KR', { ...tz, day: 'numeric' });
+  const year    = now.toLocaleString('ko-KR', { ...tz, year: 'numeric' }).replace(/[^0-9]/g, '');
+  const month   = now.toLocaleString('en-US', { ...tz, month: 'numeric' });
+  const day     = now.toLocaleString('en-US', { ...tz, day: 'numeric' });
   const weekday = now.toLocaleString('ko-KR', { ...tz, weekday: 'long' });
-  const h = String(now.toLocaleString('ko-KR', { ...tz, hour: '2-digit', hour12: false })).padStart(2,'0');
-  const m = String(now.toLocaleString('ko-KR', { ...tz, minute: '2-digit' })).padStart(2,'0');
   document.getElementById('dt-date').textContent = `${year}년 ${month}월 ${day}일 ${weekday}`;
-  document.getElementById('dt-time').textContent = `${h}:${m}`;
 }
-updateClock();
-setInterval(updateClock, 30000);
+updateDate();
 
 // ── Weather codes (WMO) ──
 function weatherDescription(code) {
